@@ -19,9 +19,9 @@
         <v-list-item link>
           <v-list-item-content>
             <v-list-item-title class="title">
-              SIMADIAN
+              {{ $store.state.ngo_name }}
             </v-list-item-title>
-            <v-list-item-subtitle>Let's Sell it</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ $store.state.ngo_title }}</v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-action>

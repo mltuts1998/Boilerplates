@@ -14,7 +14,7 @@
           cols="12"
         >
           <h1 class="display-1 font-weight-thick mb-4">
-            SIMADIAN
+            {{ $store.state.ngo_name }}
           </h1>
 
           <v-img
@@ -24,7 +24,7 @@
           ></v-img>
           
           <h4 class="subheading">
-            Let's Sell It
+            {{ $store.state.ngo_title }}
           </h4>
 
           <v-btn

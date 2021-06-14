@@ -8,6 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     ngo_name: "JPMC",
+    ngo_title: "let's help other",
     URL: "http://localhost:8000/",
     drawer: null,
     user: null,
