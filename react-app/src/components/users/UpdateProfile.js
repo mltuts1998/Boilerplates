@@ -9,6 +9,9 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
+import {useHistory} from 'react-router-dom';
+
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
@@ -34,20 +37,28 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const formatDate = (date) => {
-    let processed_date = `${date.getFullYear()}/${date.getMonth()}/${date.getDay()}`
-    return processed_date;
-};
 
+function formatDate(date) {
+    var d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    let year = d.getFullYear();
 
-const Login = () => {
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    let parse = [year, month, day].join('-');
+    console.log(parse)
+    return parse
+}
+
+const UpdateProfile = () => {
     const classes = useStyles();
+    const history = useHistory();
+    
     const { name, changeName, deleteName } = useContext(GlobalContext);
-    
-    useEffect(() => {
-
-    });
-    
     const [values, setValues] = React.useState({
         username: '',
         firstname: '',
@@ -57,6 +68,36 @@ const Login = () => {
         confirm_password: '',
         date_of_birth: new Date()
       });
+    const state = useContext(GlobalContext);
+
+    useEffect(() => {
+      let url = state.url + "users/user/";
+      let token = localStorage.getItem("access_token");
+   
+      let config = {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      }
+            
+      axios.get(url, config)
+      .then(res => {
+          res = res.data;
+
+            setValues({...values, 
+                username: res.username,
+                firstname: res.first_name,
+                lastname: res.last_name,
+                email: res.email,
+                date_of_birth: res.date_of_birth
+            });
+            console.log(values);
+      })
+      .catch(err => {
+          console.log(err);
+      })
+      
+    }, []);
     
 
     const handleChange = (prop) => (event) => {
@@ -70,7 +111,36 @@ const Login = () => {
 
     const submitForm = (event) => {
         // Make Request Here
+        let url = state.url + "users/user/";
+        let token = localStorage.getItem("access_token");
+        
+        let config = {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        }   
+
         console.log(values);
+
+        let data = {
+            username: values.username,
+            first_name: values.firstname,
+            last_name: values.lastname,
+            email: values.email,
+            password: values.password,
+            confirm_password: values.confirm_password,
+            date_of_birth: formatDate(values.date_of_birth)
+        };
+
+        console.log(data);
+        axios.put(state.url + 'users/user/', data, config)
+        .then(res => {
+            window.location.reload();
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
     
     return (    
@@ -122,7 +192,7 @@ const Login = () => {
 
 
                     <FormControl  fullWidth variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-email">Last Name</InputLabel>
+                    <InputLabel htmlFor="outlined-adornment-lastname">Last Name</InputLabel>
                     <OutlinedInput
                         id="outlined-adornment-lastname"
                         value={values.lastname}
@@ -213,7 +283,7 @@ const Login = () => {
                         onClick={ () => submitForm() } 
                         disabled={ values.password != values.confirm_password }
                     >
-                        Update
+                        Register
                     </Button>
                 </div>
 
@@ -222,5 +292,4 @@ const Login = () => {
     )
 }
 
-
-export default Login;
+export default UpdateProfile;

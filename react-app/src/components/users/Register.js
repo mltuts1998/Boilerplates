@@ -54,7 +54,7 @@ function formatDate(date) {
     return parse
 }
 
-const Login = () => {
+const Register = () => {
     const classes = useStyles();
     const history = useHistory();
 
@@ -250,4 +250,4 @@ const Login = () => {
 }
 
 
-export default Login;
+export default Register;
