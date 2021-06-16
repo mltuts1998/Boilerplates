@@ -9,7 +9,8 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,22 +28,42 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+
+async function getApi(data) {
+    let res = await axios.post("http://localhost:8000/" + 'api/token/', data)
+    res = res.data;
+    localStorage.setItem("refresh_token", res.refresh);
+    localStorage.setItem("access_token", res.access);
+    console.log(res);
+
+}
 const Login = () => {
     const classes = useStyles();
-    const { name, changeName, deleteName } = useContext(GlobalContext);
+    const state = useContext(GlobalContext);
     const [values, setValues] = React.useState({
         email: '',
         password: '',
       });
-
+    
+    const history = useHistory();
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const submitForm = (event) => {
+    const submitForm = () => {
         // Make Request Here
+        try {
+            getApi(values)
+            .then( res => {
+                state.toggleLogin();
+                history.push("/")
+            })
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
-    
+
     return (    
         <>
             <Card
