@@ -10,7 +10,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-
+import {useHistory} from 'react-router-dom';
 
 import {
     MuiPickersUtilsProvider,
@@ -37,14 +37,27 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const formatDate = (date) => {
-    let processed_date = `${date.getFullYear()}/${date.getMonth()}/${date.getDay()}`
-    return processed_date;
-};
 
+function formatDate(date) {
+    var d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    let year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    let parse = [year, month, day].join('-');
+    console.log(parse)
+    return parse
+}
 
 const Login = () => {
     const classes = useStyles();
+    const history = useHistory();
+
     const { name, changeName, deleteName } = useContext(GlobalContext);
     const [values, setValues] = React.useState({
         username: '',
@@ -55,6 +68,7 @@ const Login = () => {
         confirm_password: '',
         date_of_birth: new Date()
       });
+      const state = useContext(GlobalContext);
     
 
     const handleChange = (prop) => (event) => {
@@ -68,7 +82,24 @@ const Login = () => {
 
     const submitForm = (event) => {
         // Make Request Here
-        console.log(values);
+        let data = {
+            username: values.username,
+            first_name: values.firstname,
+            last_name: values.lastname,
+            email: values.email,
+            password: values.password,
+            confirm_password: values.confirm_password,
+            date_of_birth: formatDate(values.date_of_birth)
+        };
+
+        console.log(data);
+        axios.post(state.url + 'users/create/', data)
+        .then(res => {
+            history.push("/login");
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
     
     return (    

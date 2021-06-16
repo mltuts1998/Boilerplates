@@ -43,6 +43,11 @@ const formatDate = (date) => {
 const Login = () => {
     const classes = useStyles();
     const { name, changeName, deleteName } = useContext(GlobalContext);
+    
+    useEffect(() => {
+
+    });
+    
     const [values, setValues] = React.useState({
         username: '',
         firstname: '',

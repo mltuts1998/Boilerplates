@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-async function getApi(data) {
-    let res = await axios.post("http://localhost:8000/" + 'api/token/', data)
+async function getApi(url, data) {
+    let res = await axios.post(url + 'api/token/', data)
     res = res.data;
     localStorage.setItem("refresh_token", res.refresh);
     localStorage.setItem("access_token", res.access);
@@ -53,7 +53,7 @@ const Login = () => {
     const submitForm = () => {
         // Make Request Here
         try {
-            getApi(values)
+            getApi(state.url, values)
             .then( res => {
                 state.toggleLogin();
                 history.push("/")

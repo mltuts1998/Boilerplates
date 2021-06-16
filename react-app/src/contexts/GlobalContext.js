@@ -8,7 +8,7 @@ const GlobalContextProvider = (props) => {
     const [drawer, setDrawer] = useState("JPMC NGO");
     const [loggedIn, setLoggedIn] = useState(false);
     const [loader, setLoader] = useState(true);
-
+    const [url, setUrl] = useState("http://localhost:8000/")
     useEffect(() => {
         if(localStorage.getItem("access_token")) {
             setLoggedIn(true);
@@ -34,7 +34,7 @@ const GlobalContextProvider = (props) => {
     }
 
     return (    
-        <GlobalContext.Provider value={{ drawer, name, changeName, deleteName, loggedIn, loader, toggleLoader, toggleLogin }}>
+        <GlobalContext.Provider value={{ drawer, name, changeName, deleteName, loggedIn, loader, toggleLoader, url, toggleLogin }}>
             { props.children }
         </GlobalContext.Provider>
     );
