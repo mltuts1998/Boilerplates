@@ -9,6 +9,8 @@ const Test = () => {
         <div>
             <Drawer>
                 {/* All components */}
+                { name }
+                <input value={name} onChange={ (event) => changeName(event.target.value) } />
                 
             </Drawer>
         </div>

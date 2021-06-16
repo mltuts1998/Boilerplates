@@ -8,9 +8,11 @@ import {
 
 import Test from './views/test/Test.js'
 import NotFound from './views/NotFound.js'
+import GlobalContextProvider from './contexts/GlobalContext.js';
 
 function App() {
   return (
+      <GlobalContextProvider>
         <Router>
           <Switch>
 
@@ -24,6 +26,7 @@ function App() {
             </Route>
           </Switch>
         </Router>
+      </GlobalContextProvider>
   );
 }
 
