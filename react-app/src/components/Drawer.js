@@ -87,7 +87,9 @@ export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
   const { drawer, name, changeName, deleteName } = useContext(GlobalContext);
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };
