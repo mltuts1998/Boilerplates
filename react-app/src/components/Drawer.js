@@ -98,7 +98,13 @@ export default function MiniDrawer(props) {
   const [open, setOpen] = React.useState(false);
   const history = useHistory();
   const { drawer, name, changeName, deleteName, loggedIn } = useContext(GlobalContext);
-  
+  const [items, setItems] = React.useState([
+      {
+          text: "Update Profile",
+          link: "/update-profile",
+          _disabled: (localStorage.getItem("access_token") ? false: true)
+      }
+  ])
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -217,22 +223,32 @@ export default function MiniDrawer(props) {
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
+          {items.map(({text, link, _disabled}, index) => (
+            <ListItem button key={text}
+                onClick={ () => history.push(link)}
+                disabled={_disabled == true}
+            >
+                {
+                    console.log(_disabled)
+                }
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        {
+            /*
+                <Divider />
+                <List>
+                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                    <ListItem button key={text}>
+                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                    <ListItemText primary={text} />
+                    </ListItem>
+                ))}
+                </List>
+            */
+        }
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
