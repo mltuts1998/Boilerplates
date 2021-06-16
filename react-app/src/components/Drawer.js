@@ -18,6 +18,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { GlobalContext } from '../contexts/GlobalContext.js';
+import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
+
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AddToHomeScreenIcon from '@material-ui/icons/AddToHomeScreen';
+import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
+import DialogLogout from './users/DialogLogout.js';
+
 
 const drawerWidth = 240;
 
@@ -86,9 +94,10 @@ const useStyles = makeStyles((theme) => ({
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
+  const [dialog, setDialog] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-
-  const { drawer, name, changeName, deleteName } = useContext(GlobalContext);
+  const history = useHistory();
+  const { drawer, name, changeName, deleteName, loggedIn } = useContext(GlobalContext);
   
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -97,6 +106,12 @@ export default function MiniDrawer(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const logout = () => {
+      //
+      setDialog(true);
+      console.log(dialog);  
+  }
 
   return (
     <div className={classes.root}>
@@ -122,6 +137,64 @@ export default function MiniDrawer(props) {
           <Typography variant="h6" noWrap>
             { drawer }
           </Typography>
+            
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    width: "100%"
+                }}
+            >
+             
+            { !loggedIn ? ( 
+                <div>
+                    <Button
+                        variant="contained"
+                        color="default"
+                        className={classes.button}
+                        startIcon={<AddToHomeScreenIcon />}
+                        style={{
+                            marginLeft: "10px"
+                        }}
+                        onClick={ () =>  history.push('/login')}
+                    >
+                        Login
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="default"
+                        className={classes.button}
+                        startIcon={<AddToPhotosIcon />}
+                        style={{
+                            marginLeft: "10px"
+                        }}
+                        onClick={ () =>  history.push('/register')}
+                    >
+                        Register
+                    </Button>
+                </div>
+            ) :
+            (
+                <Button
+                    variant="contained"
+                    color="default"
+                    className={classes.button}
+                    startIcon={<ExitToAppIcon />}
+                    style={{
+                        marginLeft: "10px"
+                    }}
+                    onClick={ () =>  logout()}
+                >
+                    Logout
+                </Button>
+            ) 
+        }          
+        
+        </div>
+
+        <DialogLogout dialog={dialog} setDialog={setDialog} />
+
+
         </Toolbar>
       </AppBar>
       <Drawer
@@ -140,7 +213,7 @@ export default function MiniDrawer(props) {
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
+          </IconButton> 
         </div>
         <Divider />
         <List>
