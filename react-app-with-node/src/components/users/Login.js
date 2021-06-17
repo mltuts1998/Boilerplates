@@ -30,10 +30,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 async function getApi(url, data) {
-    let res = await axios.post(url + 'api/token/', data)
+    let res = await axios.post(url + 'users/signin/', data)
     res = res.data;
-    localStorage.setItem("refresh_token", res.refresh);
-    localStorage.setItem("access_token", res.access);
+    localStorage.setItem("access_token", res.access_token);
     console.log(res);
 
 }

@@ -71,7 +71,7 @@ const UpdateProfile = () => {
     const state = useContext(GlobalContext);
 
     useEffect(() => {
-      let url = state.url + "users/user/";
+      let url = state.url + "user/";
       let token = localStorage.getItem("access_token");
    
       let config = {
@@ -111,7 +111,7 @@ const UpdateProfile = () => {
 
     const submitForm = (event) => {
         // Make Request Here
-        let url = state.url + "users/user/";
+        let url = state.url + "user/update-profile/";
         let token = localStorage.getItem("access_token");
         
         let config = {
@@ -134,7 +134,7 @@ const UpdateProfile = () => {
         };
 
         console.log(data);
-        axios.put(state.url + 'users/user/', data, config)
+        axios.put(state.url + 'user/update-profile/', data, config)
         .then(res => {
             window.location.reload();
         })

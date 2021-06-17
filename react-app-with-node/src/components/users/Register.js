@@ -93,7 +93,7 @@ const Register = () => {
         };
 
         console.log(data);
-        axios.post(state.url + 'users/create/', data)
+        axios.post(state.url + 'users/signup/', data)
         .then(res => {
             history.push("/login");
         })

@@ -133,10 +133,22 @@ exports.updateProfile = catchAsync(async (req, res, next) => {
   console.log(res.locals.user);
 
   const email = res.locals.user.email
+  const user = await User.findOne({email})
 
-  const user = await User.updateOne({ email }, req.body);
+  const validPassword = await bcrypt.compare(
+    req.body.password,
+    user.password  
+  );
+  console.log(validPassword);
 
-  res.status(200).send({ message: "Successfully Updated The Profile" })
+  if(validPassword) {
+    const user = await User.updateOne({ email }, req.body);
+    res.status(200).send({ message: "Successfully Updated The Profile" })
+  }
+  else {
+    return next(new AppError('Password not valid!', 401));
+  }
+  
 });
 
 
