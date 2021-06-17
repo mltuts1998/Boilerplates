@@ -121,7 +121,7 @@
       validate () {
         let a = this.$refs.form.validate()
         
-        let url = this.$store.state.URL + "users/user/";
+        let url = this.$store.state.URL + "user/update-profile/";
         let token = localStorage.getItem("access");
         
         if(true) {
@@ -162,7 +162,7 @@
       });
     },
     async created() {
-      let url = this.$store.state.URL + "users/user/";
+      let url = this.$store.state.URL + "user/";
       let token = localStorage.getItem("access");
    
       let config = {

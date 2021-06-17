@@ -36,7 +36,7 @@ export default new Vuex.Store({
   actions: {
     async userRegister({commit, state}, data) {
       try {
-        let res = await axios.post(state.URL + 'users/create/', data)
+        let res = await axios.post(state.URL + 'users/signup/', data)
         return res.data;
       } catch (err) {
         throw err;
@@ -46,10 +46,9 @@ export default new Vuex.Store({
     async userLogin({commit, state}, data) {
       try {
         console.log(data);
-        let res = await axios.post(state.URL + 'api/token/', data)
+        let res = await axios.post(state.URL + 'users/signin/', data)
         res = res.data;
-        localStorage.setItem("refresh", res.refresh);
-        localStorage.setItem("access", res.access);
+        localStorage.setItem("access", res.access_token);
         return res;
       } catch (err) {
         if(err.response) {
@@ -62,7 +61,7 @@ export default new Vuex.Store({
     async verifyToken({commit, state}, data) {
       try {
         console.log(data);
-        let res = await axios.post(state.URL + 'api/token/verify/', data)
+        let res = await axios.post(state.URL + 'user/', data)
         res = res.data;
 
         return res;

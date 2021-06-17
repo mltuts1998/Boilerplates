@@ -26,6 +26,8 @@ app.use('/users',require('./routes/authRoutes/auth'));
 app.use('/user',require('./routes/userRoutes/user'));
 app.use('/api/products',require('./routes/testRoutes/products'));
 
+app.use('/api/token',require('./routes/userRoutes/token'));
+
 // error handler
 app.use(errorcontroller);
 

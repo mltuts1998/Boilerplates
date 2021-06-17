@@ -154,6 +154,25 @@ exports.detail = catchAsync(async (req, res, next) => {
 });
 
 
+exports.verify = catchAsync(async (req, res, next) => {
+   // 1) Get token, check if it's there
+   let { token } = req.body;
+
+   // 2) Verify token
+   const decoded = await promisify(jwt.verify)(token, config.jwtSecret);
+ 
+   // 3) Check if user still exists
+   const foundUser = await User.findById(decoded.id);
+   if (!foundUser) {
+     return next(
+       new AppError('The user associated with this token no longer exists.', 401)
+     );
+   }
+   else {
+     return res.status(200).send({});
+   }
+})
+
 exports.sendOtp = catchAsync(async (req, res, next) => {
   const { email } = req.body;
 
