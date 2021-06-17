@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+		.jumbotron {
+			background: white;
+			box-shadow: 5px 3px 20px rgba(0, 0, 0, .3);
+			max-width: 700px;	
+			transition: 400ms linear;	
+		}
+
+		.jumbotron:hover {
+		    transform: translateY(-4px);	
+		    transition: 400ms linear;
+		}
+
+        input {
+            width: 100%;
+            padding: 4px;
+        }
+
+        label {
+            padding: 25px 0px 0px 0px;
+            font-weight: bolder;
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .help-block, ul > li {
+            font-size: 12px;
+            padding: 2px;
+            color: gray;
+        }
+
+</style>
+	<div class="container mx-auto mt-3 py-4 jumbotron">
+			<h1 class="text-center text-muted display-6 text-uppercase">Sign Up</h1>
+            <hr />
+			<form method="POST">
+				{% csrf_token %}
+ 				{{ form|crispy }}
+				<div class="button">
+                    <input type="submit" name="" value="Register" class="btn w-25 btn-primary px-4 py-2">
+                </div>
+			</form>
+	</div>
+{% endblock %}
